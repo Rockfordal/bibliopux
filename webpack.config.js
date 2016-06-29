@@ -25,6 +25,7 @@ var config = {
         exclude: /node_modules/,
         query: {
           psc: 'psa',
+          pscIde: true,
           pscArgs: {
             sourceMaps: true
           }
