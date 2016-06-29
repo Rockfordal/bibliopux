@@ -20,8 +20,10 @@ init =
   , count: Counter.init }
 
 update :: Action -> State -> State
-update (PageView route) state = state { route = route }
-update (Child action) state = state { count = Counter.update action state.count }
+update (PageView route) state =
+  state { route = route }
+update (Child action) state =
+  state { count = Counter.update action state.count }
 
 view :: State -> Html Action
 view state =
