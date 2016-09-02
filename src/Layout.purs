@@ -19,15 +19,19 @@ data Action
   = Child (Counter.Action)
   | PageView Route
   | RequestBooks
-  | ReceiveBooks (Either String Books)
+  | RequestShelfs
+  | ReceiveBooks  (Either String Books)
+  | ReceiveShelfs (Either String Shelfs)
 
 type State =
   { route :: Route
   , count :: Counter.State
   , books :: Books
+  , shelfs :: Shelfs
   , status :: String }
 
-type Books = Array Book
+type Books  = Array Book
+type Shelfs = Array Shelf
 
 newtype Book = Book
   { id :: Int
@@ -36,12 +40,17 @@ newtype Book = Book
   , content :: String
   , year :: Int }
 
+newtype Shelf = Shelf
+  { id :: Int
+  , label :: String
+  }
 
 init :: State
 init =
   { route: NotFound
   , count: Counter.init
   , books: []
+  , shelfs: []
   , status: "Klicka för att hämta data" }
 
 
@@ -57,6 +66,18 @@ instance decodeJsonBook :: DecodeJson Book where
     pure $ Book { id: id, author: author, title: title, content: content, year: year }
 
 
+-- | Decode our Book JSON we receive from the server
+instance decodeJsonShelf :: DecodeJson Shelf where
+  decodeJson json = do
+    obj       <- decodeJson json
+    id        <- obj .? "id"
+    label     <- obj .? "label"
+    -- size      <- obj .? "size"
+    -- position  <- obj .? "position"
+    -- timestamp <- obj .? "timestamp"
+    pure $ Shelf { id: id, label: label }
+    -- pure $ Shelf { id: id, label: label, size: size, position: position, timestamp: timestamp }
+
 update :: Action -> State -> EffModel State Action (dom :: DOM, ajax :: AJAX)
 update (PageView route) state = { state: state { route = route }, effects: [] }
 update (Child action) state =  { state: state { count = Counter.update action state.count }, effects: [] }
@@ -67,7 +88,7 @@ update (ReceiveBooks (Right books)) state =
 update (RequestBooks) state =
   { state: state { status = "Hämtar böcker..." }
   , effects: [ do
-      res <- attempt $ get "http://localhost:3000/books"
+      res <- attempt $ get "http://localhost:3000/shelfs"
       let decode r = decodeJson r.response :: Either String Books
       let books = either (Left <<< show) decode res
       pure $ ReceiveBooks books
