@@ -1,7 +1,9 @@
 module Main where
 
 import App.Routes (match)
-import App.Layout (Action(PageView), State, view, update)
+import App.Types (State, Action(..))
+import App.State (update)
+import App.Layout (view)
 import Control.Bind ((=<<))
 import Control.Monad.Eff (Eff)
 import DOM (DOM)
@@ -15,7 +17,7 @@ import Network.HTTP.Affjax (AJAX) -- get
 type AppEffects = (dom :: DOM, ajax :: AJAX)
 
 config :: forall eff.  State -> Eff
-             ( dom :: DOM | eff)
+             (dom :: DOM | eff)
              (Config State Action AppEffects)
 
 
