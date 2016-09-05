@@ -12,10 +12,12 @@ import Prelude (($), (<$>))
 match :: String -> Route
 match url = fromMaybe NotFoundR $ router url $
   HomeR <$ end
+  -- <|>
+  -- CalR   <$ (lit "cal") <* end
   <|>
   AboutR <$ (lit "about") <* end
   <|>
   ShelfR <$ (lit "shelfs") <* end
   <|>
-  ItemR <$ (lit "items") <* end
+  ItemR  <$ (lit "items") <* end
   -- Shelfs <$> (lit "shelfs" *> param "sortBy") <* end

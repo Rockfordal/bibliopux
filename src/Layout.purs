@@ -1,10 +1,11 @@
 module App.Layout where
 
 import App.Counter as Counter
+import App.Cal as Cal
 import App.NotFound as NotFound
 import App.Shelfs (shelfs_v)
 import App.Items (items_v)
-import App.Types (State, Action(Child), Route(..))
+import App.Types -- (State, Action(..), Route(..))
 import Pux.Html (Html, text, h1, li, ul, nav, b, div, br)
 import Pux.Router (link)
 import Prelude (($), map)
@@ -17,7 +18,9 @@ view state =
       , br [] []
     -- , b [] [text "hej"]
     , case state.route of
-        HomeR     -> map Child $ Counter.view state.count
+        -- HomeR     -> map ChildCount $ Counter.view state.count
+        HomeR     -> home_v
+        -- CalR      -> map ChildCal $ Cal.view state.calinfo
         AboutR    -> about_v
         ShelfR    -> shelfs_v state
         ItemR     -> items_v state
@@ -32,6 +35,7 @@ navigation =
     [ ul
       []
       [ li [] [ link "/"       [] [ text "Home" ] ]
+      , li [] [ link "/cal"    [] [ text "Kalender" ] ]
       , li [] [ link "/shelfs" [] [ text "Hyllor" ] ]
       , li [] [ link "/items"  [] [ text "Items" ] ]
       , li [] [ link "/about"  [] [ text "Om" ] ]
@@ -39,6 +43,9 @@ navigation =
       ]
     ]
 
+home_v :: Html Action
+home_v =
+  h1 [] [ text "Hem" ]
 
 about_v :: Html Action
 about_v =

@@ -4,12 +4,15 @@ import Prelude (($), bind, (<>), pure, (<<<))
 import Data.Either (Either)
 import Data.Argonaut (class DecodeJson, decodeJson, (.?))
 import App.Counter as Counter
+import App.Cal as Cal
 
 
 data Route = HomeR | AboutR | ShelfR | ItemR | NotFoundR
+-- | CalR
 
 data Action
-  = Child (Counter.Action)
+  -- = ChildCount (Counter.Action)
+  = ChildCal (Cal.Action)
   | PageView Route
   | RequestItems
   | ReceiveItems (Either String Items)
@@ -17,14 +20,13 @@ data Action
   | ReceiveShelfs (Either String Shelfs)
 
 type State =
-  { route  :: Route
-  , count  :: Counter.State
-  , shelfs :: Shelfs
-  , items  :: Items
-  , status :: String }
+  { route    :: Route
+  -- , count    :: Counter.State
+  , calinfo  :: Cal.State
+  , shelfs   :: Shelfs
+  , items    :: Items
+  , status   :: String }
 
-
--- Shelfs
 
 newtype Shelf = Shelf
   { id        :: Int
