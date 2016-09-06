@@ -46,14 +46,16 @@ instance decodeJsonShelf :: DecodeJson Shelf where
     size      <- obj .? "size"
     position  <- obj .? "position"
     timestamp <- obj .? "timestamp"
-    pure $ Shelf { id: id, label: label, size: size, position: position, timestamp: timestamp }
+    pure $ Shelf { id: id, label:label, size:size, position:position, timestamp:timestamp }
 
 
 -- Items
 
 newtype Item = Item
-  { id   :: Int
-  , name :: String
+  { id        :: Int
+  , name      :: String
+  , info      :: String
+  , timestamp :: String
   }
 
 type Items = Array Item
@@ -63,4 +65,6 @@ instance decodeJsonItem :: DecodeJson Item where
     obj       <- decodeJson json
     id        <- obj .? "id"
     name      <- obj .? "name"
-    pure $ Item { id: id, name: name }
+    info      <- obj .? "info"
+    timestamp <- obj .? "timestamp"
+    pure $ Item { id: id, name:name, info:info, timestamp:timestamp }

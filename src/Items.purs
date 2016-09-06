@@ -23,6 +23,8 @@ items_v state =
       [ tr
         []
         [ th [] [text "Namn"]
+        , th [] [text "Info"]
+        , th [] [text "Skapad"]
         ]
       ]
     , tbody []
@@ -35,4 +37,6 @@ item_v :: Item -> Html Action
 item_v (Item item) =
   tr [ key (show item.id), className "item" ]
      [ td [] [text item.name]
+     , td [] [text item.info]
+     , td [] [text item.timestamp]
      ]
