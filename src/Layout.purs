@@ -11,6 +11,7 @@ import Pux.Router (link)
 import Prelude (($), map)
 
 
+
 view :: State -> Html Action
 view state =
   div []
@@ -39,7 +40,6 @@ navigation =
       , li [] [ link "/shelfs" [] [ text "Hyllor" ] ]
       , li [] [ link "/items"  [] [ text "Items" ] ]
       , li [] [ link "/about"  [] [ text "Om" ] ]
-      , li [] [ link "/sdfsdf" [] [ text "Not found" ] ]
       ]
     ]
 
@@ -49,4 +49,7 @@ home_v =
 
 about_v :: Html Action
 about_v =
-  h1 [] [ text "Om oss" ]
+  div []
+  [ h1 [] [ text "Om oss" ]
+  , li [] [ link "/sdfsdf" [] [ text "Not found" ] ]
+  ]
